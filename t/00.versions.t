@@ -5,14 +5,14 @@ use warnings;
 
 # I tried 'require'-ing modules but that did not work.
 
-use Config::Tiny; # For the version #.
+use DBIx::Admin::BackupRestore; # For the version #.
 
 use Test::More;
 
-use File::Spec;
-use File::Temp;
-use strict;
-use utf8;
+use Carp;
+use XML::Parser;
+use XML::Records;
+use XML::TokeParser;
 
 # ----------------------
 
@@ -20,13 +20,13 @@ pass('All external modules loaded');
 
 my(@modules) = qw
 /
-	File::Spec
-	File::Temp
-	strict
-	utf8
+	Carp
+	XML::Parser
+	XML::Records
+	XML::TokeParser
 /;
 
-diag "Testing Config::Tiny V $Config::Tiny::VERSION";
+diag "Testing DBIx::Admin::BackupRestore V $DBIx::Admin::BackupRestore::VERSION";
 
 for my $module (@modules)
 {

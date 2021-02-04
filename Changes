@@ -8,7 +8,7 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 	- Add t/00.*.
 	- Update Makefile.PL and POD to change RT to github.
 
-1.17  Wed Aug 25 11:44:00 2010
+1.17  2010-08-25T11:44:00
 	- Add a note to the FAQ in the POD about the code's failure to handle fields
 	  containing newlines.
 	- Add a note to the FAQ in the POD about the XML parser's failure to handle text
@@ -16,31 +16,31 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 	- These 2 notes were suggested by John D Groenveld.
 	- Reformat long lines in this file, and in the POD.
 
-1.16  Sun Feb 21 12:54:51 2010
+1.16  2010-02-21T12:54:51
 	- Remove text 'All rights reserved' (for Debian licensing).
 	- Remove POD heads 'Required Modules' and 'Changes'.
 	- Replace personal doc root with /var/www.
 	- Use namespace::autoclean with Moose.
 
-1.15  Wed Feb 10 14:01:40 2010
+1.15  2010-02-10T14:01:40
 	- Update MANIFEST.SKIP. Add MANIFEST and MYMETA.yml.
 
-1.14  Fri Nov 13 13:20:00 2009
+1.14  2009-11-13T13:20:00
 	- Run dos2unix
 	- Rename Changes.txt to CHANGES
 
-1.13  Wed Jul  9 09:59:00 2008
+1.13  2008-07-09T09:59:00
 	- Retry specifying a minimum version of Perl in Makefile.PL, using different syntax.
 	  Thanx to David Golden for the suggestion
 
-1.12  Mon Jul  7 10:21:00 2008
+1.12  2008-07-07T10:21:00
 	- Patch Build.PL and Makefile.PL to specify the required version of Perl,
 	  since the code inside module, 'require 5.005_62;', is not enough to stop
 	  the great CPAN testers using 5.005_05
 	- Reformat Build.PL and Makefile.PL slightly now that I'm using emacs
 	- Ship Configlog.ini
 
-1.11  Sun Aug 13 18:20:00 2006
+1.11  2006-08-13T18:20:00
 	- 'fiddle_timestamp' now takes one of these values: 0, 1 or 2, or any of those
 	  values + 128.
 	  The 128 means the top (left-most) bit in the byte value of this parameter is set.
@@ -51,11 +51,11 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 	  timestamp is now valid under the strict option for MySQL V 5, whereas
 	  1970-01-01 00:00:00 is invalid.
 
-1.10  Wed May 17 11:34:00 2006
+1.10  2006-05-17T11:34:00
 	- Patch to handle the case where the table has 1 row, and XML::Records then
 	  does not return an array ref
 
-1.09  Thu Feb 09 15:53:00 2006
+1.09  2006-02-09T15:53:00
 	- Fix broken method restore_in_order()
 	- Add support for exporting from Oracle by adding 4 new parameters to new():
 		o dbi_catalog
@@ -78,14 +78,14 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 		Now, all quotes are removed, so `public.t` still becomes public.t, but also
 		"X"."T" becomes X.T.
 
-1.08  Tue Jul 19 10:45:00 2005
+1.08  2005-07-19T10:45:00
 	- The previous patches did not include sub backup() calling sub process_table()
 		to split the schema name off from the table name, so table names with schema
 		names still attached were not being skipped. Big mistake. My aplologies
 	- Add XML::Parser, XML::Records and XML::TokeParser to Build.PL and Makefile.PL.
 		They should have been included since V 1.06
 
-1.07  Tue Jun 28 13:41:11 2005
+1.07  2005-06-28T13:41:11
 	- The default behaviour of this version is the same as for previous version,
 		so there is no need to upgrade unless you need the new features.
 	- Fix bug whereby sub backup could output <row></row> because all columns
@@ -139,7 +139,7 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 	  	almost certainly want to supply to the skip_tables option if exporting
 		from MS Access.
 
-1.06  Fri May 20 15:45:00 2005
+1.06  2005-05-20T15:45:00
 	- Correct docs discussing the value 2 for the fiddle_timestamp option, which said
 		timestamp and should have said datetime.
 	- Add an FAQ to the docs
@@ -170,7 +170,7 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 		o XML::TokeParser
 		o XML::Records
 
-1.05  Fri Apr 15 09:34:00 2005
+1.05  2005-04-15T09:34:00
 	- Add another value to the range accepted by the option fiddle_timestamp.
 		This option is only used when restoring XML-based data to a database.
 		The default value is the same as V 1.04.
@@ -201,7 +201,7 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 			2005-04-15 09:34:00.
 	- Expand the docs referring to fiddle_timestamp
 
-1.04  Wed Mar  2 13:20:00 2005
+1.04  2005-03-02T13:20:00
 	- A new option has been added to the constructor: skip_schema.
 		Here, 'schema' is defined to be the prefix on a table name,
 		and to be separated from the table name by a '.'.
@@ -222,7 +222,7 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 		This parameter is optional. The default value is 0, so the module behaves as
 		it did before.
 
-1.03  Tue Sep 14 13:39:00 2004
+1.03  2004-09-14T13:39:00
 	- A new option has been added to the constructor: fiddle_timestamp.
 		If you call new(fiddle_timestamp => 0), we skip the documented process of
 		fiddling values of type timestamp during a call to restore(), so that the data
@@ -231,7 +231,7 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 		This parameter is optional. The default value 1, so the module behaves as it
 		did before.
 
-1.02  Thu Aug 26 12:57:00 2004
+1.02  2004-08-26T12:57:00
 	- A new option has been added to the constructor: skip_tables.
 		If new is called as new(skip_tables => ['some_table_name']), the restore phase
 		does not restore the tables named in the call to new().
@@ -241,8 +241,8 @@ Revision history for Perl extension DBIx::Admin::BackupRestore.
 		This parameter is optional. It defaults to [], so the module behaves as it did
 		before.
 
-1.01  Mon Jul 19 14:43:00 2004
+1.01  2004-07-19T14:43:00
 	- Change Makefile.PL to coexist with Module::Build
 
-1.00  Tue Jan 22 12:37:29 2004
+1.00  2004-01-22T12:37:29
 	- Original version

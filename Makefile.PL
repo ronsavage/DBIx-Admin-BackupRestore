@@ -11,7 +11,7 @@ WriteMakefile
 	(
 		AUTHOR		=> 'Ron Savage (ron@savage.net.au)',
 		ABSTRACT	=> 'Back-up all tables in a db to XML, and restore them',
- ) : (),
+	) : (),
 	clean =>
 	{
 		FILES => 'blib/* Makefile MANIFEST DBIx-Admin-BackupRestore-*'

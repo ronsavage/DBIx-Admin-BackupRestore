@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use boolean;
+
 use Data::Dumper::Concise; # For Dumper().
 
 use DBIx::Admin::BackupRestore;
@@ -51,16 +53,19 @@ sub generate_dbh
 
 sub populate
 {
-	my($opts, $table_name) = @_;
+	my($opts, $table_name, $empty) = @_;
 
 	create($opts, $table_name);
 
-	my($dbh)	= generate_dbh($opts);
-	my($sql)	= "insert into $table_name (id, value) values (?, ?)";
-	my($sth)	= $dbh -> prepare($sql);
+	if (! $empty)
+	{
+		my($dbh)	= generate_dbh($opts);
+		my($sql)	= "insert into $table_name (id, value) values (?, ?)";
+		my($sth)	= $dbh -> prepare($sql);
 
-	$sth -> execute(1, "Record $table_name.1") || die "Unable to execute($sql, 1)";
-	$sth -> execute(2, "Record $table_name.2") || die "Unable to execute($sql, 2)";
+		$sth -> execute(1, "Record $table_name.1") || die "Unable to execute($sql, 1)";
+		$sth -> execute(2, "Record $table_name.2") || die "Unable to execute($sql, 2)";
+	}
 
 } # End of populate.
 
@@ -90,23 +95,20 @@ if (! $ENV{DBI_DSN})
 	$ENV{DBI_PASS}	= '';
 }
 
-plan tests => 4;
+plan tests => 7;
 
 my(@opts) = ($ENV{DBI_DSN}, $ENV{DBI_USER}, $ENV{DBI_PASS});
 
 try
 {
-	populate(\@opts, 't0');
-	populate(\@opts, 't1');
-
+	populate(\@opts, 't0', false);
+	populate(\@opts, 't1', true);
+	populate(\@opts, 't2', false);
 	# Backup phase.
 
 	open(OUT, "> $xml_file") || die("Can't open(> $xml_file): $!");
 	print OUT DBIx::Admin::BackupRestore -> new(dbh => generate_dbh(\@opts) ) -> backup($db_file);
 	close OUT;
-
-	note "Wrote SQLite file $db_file";
-	note "Wrote XML file $xml_file";
 
 	ok(-r $db_file, "$db_file is readable");
 	ok(-r $xml_file, "$xml_file is readable");
@@ -121,11 +123,12 @@ try
 
 	create(\@opts, 't0');
 	create(\@opts, 't1');
+	create(\@opts, 't2');
 
 	my($table_names) = DBIx::Admin::BackupRestore -> new(dbh => generate_dbh(\@opts) ) -> restore($xml_file);
 
 	ok(-r $db_file, "$db_file is readable");
-	ok($#$table_names == 1, 'Retrieved 2 table names');
+	ok($#$table_names == 2, 'Retrieved 3 table names');
 
 	for my $i (0 .. $#$table_names)
 	{

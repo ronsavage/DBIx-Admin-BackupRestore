@@ -16,6 +16,19 @@ use Test::More;
 
 # ---------------------------------------------
 
+sub create
+{
+	my($opts, $table_name)	= @_;
+	my($dbh)				= generate_dbh($opts);
+	my($sql)				= "create table $table_name (id int not null primary key, value varchar(255) )";
+	my($sth)				= $dbh -> prepare($sql);
+
+	$sth -> execute || die "Unable to execute($sql)";
+
+} # End of create.
+
+# ---------------------------------------------
+
 sub generate_dbh
 {
 	my($opts) = @_;
@@ -38,15 +51,13 @@ sub generate_dbh
 
 sub populate
 {
-	my($opts, $table_name)	= @_;
-	my($dbh)				= generate_dbh($opts);
-	my($sql)				= "create table $table_name (id int not null primary key, value varchar(255) )";
-	my($sth)				= $dbh -> prepare($sql);
+	my($opts, $table_name) = @_;
 
-	$sth -> execute || die "Unable to execute($sql)";
+	create($opts, $table_name);
 
-	$sql	= "insert into $table_name (id, value) values (?, ?)";
-	$sth	= $dbh -> prepare($sql);
+	my($dbh)	= generate_dbh($opts);
+	my($sql)	= "insert into $table_name (id, value) values (?, ?)";
+	my($sth)	= $dbh -> prepare($sql);
 
 	$sth -> execute(1, "Record $table_name.1") || die "Unable to execute($sql, 1)";
 	$sth -> execute(2, "Record $table_name.2") || die "Unable to execute($sql, 2)";
@@ -62,9 +73,7 @@ plan skip_all => "DBI required for testing DB plugin" if $@;
 
 my($out_dir)	= File::Temp -> newdir('temp.XXXX', CLEANUP => 1, EXLOCK => 0, TMPDIR => 1);
 my($db_file)	= File::Spec -> catfile($out_dir, 'create.sqlite');
-$db_file		= '/tmp/create.sqlite';
 my($xml_file)	= File::Spec -> catfile($out_dir, 'test.xml');
-$xml_file		= '/tmp/test.xml';
 
 plan skip_all => "Temp dir is un-writable" if (! -w $out_dir);
 
@@ -104,17 +113,26 @@ try
 
 	# Restore phase.
 
-	$db_file = '/tmp/restore.sqlite';
+	$db_file = File::Spec -> catfile($out_dir, 'restore.sqlite');
 
 	unlink $db_file;
 
-	$opts[0]			= "dbi:SQLite:dbname=$db_file";
-	my($table_names)	= DBIx::Admin::BackupRestore -> new(dbh => generate_dbh(\@opts) ) -> restore($xml_file);
+	$opts[0] = "dbi:SQLite:dbname=$db_file";
+
+	create(\@opts, 't1');
+	create(\@opts, 't2');
+
+	my($table_names) = DBIx::Admin::BackupRestore -> new(dbh => generate_dbh(\@opts) ) -> restore($xml_file);
 
 	ok(-r $db_file, "$db_file is readable");
 	ok($#$table_names == 1, 'Retrieved 2 table names');
 
-	note 'Table names retrieved: ', Dumper($table_names);
+	for my $i (0 .. $#$table_names)
+	{
+		my($table_name) = 't' . ($i + 1);
+
+		ok($$table_names[$i] eq $table_name, "Restored table $table_name");
+	}
 }
 catch Error::Simple with
 {

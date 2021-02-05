@@ -90,7 +90,7 @@ if (! $ENV{DBI_DSN})
 	$ENV{DBI_PASS}	= '';
 }
 
-plan tests => 4;
+plan tests => 6;
 
 my(@opts) = ($ENV{DBI_DSN}, $ENV{DBI_USER}, $ENV{DBI_PASS});
 
@@ -104,9 +104,6 @@ try
 	open(OUT, "> $xml_file") || die("Can't open(> $xml_file): $!");
 	print OUT DBIx::Admin::BackupRestore -> new(dbh => generate_dbh(\@opts) ) -> backup($db_file);
 	close OUT;
-
-	note "Wrote SQLite file $db_file";
-	note "Wrote XML file $xml_file";
 
 	ok(-r $db_file, "$db_file is readable");
 	ok(-r $xml_file, "$xml_file is readable");

@@ -5,8 +5,6 @@ use warnings;
 
 use boolean;
 
-use Data::Dumper::Concise; # For Dumper().
-
 use DBIx::Admin::BackupRestore;
 
 use Error qw/:try/;

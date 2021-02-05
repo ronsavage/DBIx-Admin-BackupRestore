@@ -34,7 +34,8 @@ my(%params) =
 	},
 	TEST_REQUIRES =>
 	{
-		'Test::More' => 1.001014,
+		'Error'			=> 0,
+		'Test::More'	=> 1.001014,
 	},
 	VERSION_FROM	=> 'lib/DBIx/Admin/BackupRestore.pm',
 	INSTALLDIRS		=> 'site',

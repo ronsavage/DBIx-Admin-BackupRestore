@@ -7,7 +7,7 @@ use Carp;
 use File::Spec;
 use XML::Records;
 
-our $VERSION = '1.18';
+our $VERSION = '1.19';
 
 my(%_decode_xml) =
 (

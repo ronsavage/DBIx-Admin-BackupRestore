@@ -34,6 +34,7 @@ my(%params) =
 	},
 	TEST_REQUIRES =>
 	{
+		'boolean'		=> 0.46,
 		'Error'			=> 0,
 		'Test::More'	=> 1.001014,
 	},
